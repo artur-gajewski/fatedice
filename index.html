@@ -12,7 +12,6 @@
 
     <meta property="og:title" content="Fate Dice">
     <meta property="og:description" content="A simple Fate RPG dice roller">
-    <meta property="og:image" content="https://matita.github.io/fatedice/favicon-152.png">
 
     <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
     <link rel="icon" href="favicon-152.png" sizes="152x152" type="image/png">
@@ -61,7 +60,7 @@
         margin-left: auto;
         margin-right: auto;
         cursor: pointer;
-        color: #555;
+        color: rgb(49, 94, 216);
       }
 
       .die {
@@ -78,10 +77,6 @@
 
       .result {
         color: #555;
-      }
-
-      .result-num + .result-scaled:before {
-        content: ' · ';
       }
 
       .roll-btn {
@@ -118,8 +113,6 @@
       <div class="latest"></div>
 
       <footer>
-        Made by <a href="https://github.com/matita">matita</a> &middot;
-        <a href="https://github.com/matita/fatedice">Source code</a><br>
         The Fate Core font is &copy; Evil Hat Productions, LLC and is used with permission. The Four Actions icons were designed by Jeremy Keller.
       </footer>
     </div>
@@ -136,6 +129,8 @@
       }
       var scales = {
         'en': {
+          '-4': 'horryfying',
+          '-3': 'catastrophic',
           '-2': 'terrible',
           '-1': 'poor',
           '0' : 'mediocre',
@@ -183,8 +178,6 @@
         rand = new Random()
         var rolls = 5
 
-        displayBlankResult()
-        displayLatest()
         setTimeout(internalRoll, rollDelay)
 
         function internalRoll() {
@@ -196,17 +189,10 @@
           } else {
             isRolling = false
             displayResult(results)
-            saveResult(results)
           }
         }
       }
 
-      function saveResult(results) {
-        latest.unshift(results.slice())
-        while (latest.length > latestCount)
-          latest.pop()
-        localStorage['fatedice-latest'] = JSON.stringify(latest)
-      }
 
       function rollDie() {
         return rand.integer(-1, 1)
@@ -247,10 +233,6 @@
         document.querySelector('.dice').innerHTML = results.map(function(d) {
           return '<div class="die">' + display[d] + '</div>'
         }).join('')
-      }
-
-      function displayBlankResult() {
-        document.querySelector('.result').innerHTML = '---'
       }
 
       function displayResult(results) {
